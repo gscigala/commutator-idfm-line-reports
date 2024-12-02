@@ -1,0 +1,10 @@
+[Unit]
+Description=Vigicrues Data Service
+After=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/commutator-line-reports --token %%TOKEN%%
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
