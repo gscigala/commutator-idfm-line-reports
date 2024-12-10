@@ -11,7 +11,6 @@ from .idfm_line_reports_dbus_object import IdfmLineReportsDBusObject
 
 from requests.auth import HTTPBasicAuth
 
-logging.basicConfig(level=logging.INFO)
 _LOGGER = logging.getLogger(__name__)
 
 REQUEST_METRO = 'https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/physical_modes/physical_mode%3AMetro/line_reports?'
