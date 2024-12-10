@@ -149,16 +149,16 @@ class IdfmLineReportsData:
             changed_properties = {}
 
             if line.tmp_new_severity_effect != line.severity_effect:
-                _LOGGER.info("new severity_effect for line {}!".format(line.name))
                 line.severity_effect = line.tmp_new_severity_effect
                 line.tmp_new_severity_effect = ""
                 changed_properties['severity_effect'] = line.severity_effect
+                _LOGGER.info(f'new severity_effect for {line.lineType} {line.name}: {line.severity_effect}')
 
             if line.tmp_new_severity_color != line.severity_color:
-                _LOGGER.info("new severity_color for line {}!".format(line.name))
                 line.severity_color = line.tmp_new_severity_color
                 line.tmp_new_severity_color = ""
                 changed_properties['severity_color'] = line.severity_color
+                _LOGGER.info(f'new severity_color for {line.lineType} {line.name}: {line.severity_color}')
 
             if changed_properties:
                 line_dbus.properties_changed(changed_properties)
