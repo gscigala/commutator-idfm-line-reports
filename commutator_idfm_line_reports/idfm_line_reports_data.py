@@ -4,6 +4,7 @@ import threading
 import json
 import dbus
 import dbus.service
+import http
 
 from .idfm_line_reports_line import IdfmLineReportsLine
 from .idfm_line_reports_dbus_object import IdfmLineReportsDBusObject
@@ -52,6 +53,9 @@ class IdfmLineReportsData:
             raise ConnectionError("Failed to connect to the resource")
 
         _LOGGER.debug('Status: {}'.format(req))
+
+        if req.status_code == http.client.UNAUTHORIZED:
+            raise ConnectionError("Invalid token")
 
         data = json.loads(req.content)
 
