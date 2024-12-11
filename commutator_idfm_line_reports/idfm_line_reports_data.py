@@ -136,7 +136,7 @@ class IdfmLineReportsData:
         # Reset status
         for line_dbus in self.line_dbus_list:
             line_dbus.line.tmp_new_severity_effect = "NO_PROBLEM"
-            line_dbus.line.tmp_new_severity_color = "FFFFFF"
+            line_dbus.line.tmp_new_severity_color = "#FFFFFF"
 
         try:
             self.update_line(REQUEST_METRO)
