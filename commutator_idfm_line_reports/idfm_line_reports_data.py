@@ -13,6 +13,10 @@ from requests.auth import HTTPBasicAuth
 
 _LOGGER = logging.getLogger(__name__)
 
+REQUEST_INIT_METRO = 'https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/physical_modes/physical_mode%3AMetro/lines?'
+REQUEST_INIT_RER = 'https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/physical_modes/physical_mode%3ARapidTransit/lines?'
+REQUEST_INIT_TRANSILIEN = 'https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/physical_modes/physical_mode%3ALocalTrain/lines?'
+
 REQUEST_METRO = 'https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/physical_modes/physical_mode%3AMetro/line_reports?'
 REQUEST_RER = 'https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/physical_modes/physical_mode%3ARapidTransit/line_reports?'
 REQUEST_TRANSILIEN = 'https://prim.iledefrance-mobilites.fr/marketplace/v2/navitia/line_reports/physical_modes/physical_mode%3ALocalTrain/line_reports?'
@@ -30,9 +34,9 @@ class IdfmLineReportsData:
         self.quit_program = False
 
         try:
-            self.init_line(REQUEST_METRO, 'Metro')
-            self.init_line(REQUEST_RER, 'RapidTransit')
-            self.init_line(REQUEST_TRANSILIEN, 'LocalTrain')
+            self.init_line(REQUEST_INIT_METRO, 'Metro')
+            self.init_line(REQUEST_INIT_RER, 'RapidTransit')
+            self.init_line(REQUEST_INIT_TRANSILIEN, 'LocalTrain')
         except Exception as e:
             _LOGGER.error("init_line error: {}".format(e))
             raise ConnectionError("Failed to connect to the resource")
@@ -58,9 +62,8 @@ class IdfmLineReportsData:
 
         data = json.loads(req.content)
 
-        line_reports = data.get("line_reports", [])
-        for report in line_reports:
-            line = report.get("line", {})
+        lines = data.get("lines", [])
+        for line in lines:
             identifier = line.get("id")
             name = line.get("name")
             color = line.get("color")
@@ -133,7 +136,7 @@ class IdfmLineReportsData:
         # Reset status
         for line_dbus in self.line_dbus_list:
             line_dbus.line.tmp_new_severity_effect = "NO_PROBLEM"
-            line_dbus.line.tmp_new_severity_color = "FFFFFF"
+            line_dbus.line.tmp_new_severity_color = "#FFFFFF"
 
         try:
             self.update_line(REQUEST_METRO)
