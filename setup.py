@@ -2,12 +2,13 @@ from setuptools import setup, find_packages
 
 setup(
     name='communator-idfm-line-reports',
-    version='0.3.0',
+    version='0.4.0',
     packages=find_packages(where='.'),
     package_dir={'': '.'},
     install_requires=[
         'dbus-python',
-        'requests'
+        'requests',
+        'sdnotify'
     ],
     entry_points={
         'console_scripts': [
