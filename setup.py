@@ -7,7 +7,8 @@ setup(
     package_dir={'': '.'},
     install_requires=[
         'dbus-python',
-        'requests'
+        'requests',
+        'sdnotify'
     ],
     entry_points={
         'console_scripts': [
