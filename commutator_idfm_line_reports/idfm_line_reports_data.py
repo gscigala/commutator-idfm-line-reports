@@ -153,13 +153,13 @@ class IdfmLineReportsData:
             line = line_dbus.line
             changed_properties = {}
 
-            if (line.tmp_new_severity_effect != line.severity_effect) and (line.severity_effect != "NO_SERVICE"):
+            if line.tmp_new_severity_effect != line.severity_effect:
                 line.severity_effect = line.tmp_new_severity_effect
                 line.tmp_new_severity_effect = ""
                 changed_properties['severity_effect'] = line.severity_effect
                 _LOGGER.info(f'new severity_effect for {line.lineType} {line.name}: {line.severity_effect}')
 
-            if (line.tmp_new_severity_color != line.severity_color) and (line.severity_effect != "NO_SERVICE"):
+            if line.tmp_new_severity_color != line.severity_color:
                 line.severity_color = line.tmp_new_severity_color
                 line.tmp_new_severity_color = ""
                 changed_properties['severity_color'] = line.severity_color
