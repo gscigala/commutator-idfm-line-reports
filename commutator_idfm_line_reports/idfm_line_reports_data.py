@@ -98,8 +98,11 @@ class IdfmLineReportsData:
     def disrupted(self, identifier, effect, color):
         for line_dbus in self.line_dbus_list:
             if line_dbus.line.identifier == identifier:
-                line_dbus.line.tmp_new_severity_effect = effect
-                line_dbus.line.tmp_new_severity_color = color
+
+                # To have NO_SERVICE effect in priority
+                if line_dbus.line.tmp_new_severity_effect != "NO_SERVICE":
+                    line_dbus.line.tmp_new_severity_effect = effect
+                    line_dbus.line.tmp_new_severity_color = color
 
     def update_line(self, request):
 
@@ -131,7 +134,8 @@ class IdfmLineReportsData:
                     identifier = pt_object.get("id", [])
                     severity = ""
 
-                    self.disrupted(identifier, effect, color)
+                    if effect != "NO_PROBLEM":
+                        self.disrupted(identifier, effect, color)
 
     def update(self):
 
@@ -153,13 +157,13 @@ class IdfmLineReportsData:
             line = line_dbus.line
             changed_properties = {}
 
-            if (line.tmp_new_severity_effect != line.severity_effect) and (line.severity_effect != "NO_SERVICE"):
+            if line.tmp_new_severity_effect != line.severity_effect:
                 line.severity_effect = line.tmp_new_severity_effect
                 line.tmp_new_severity_effect = ""
                 changed_properties['severity_effect'] = line.severity_effect
                 _LOGGER.info(f'new severity_effect for {line.lineType} {line.name}: {line.severity_effect}')
 
-            if (line.tmp_new_severity_color != line.severity_color) and (line.severity_effect != "NO_SERVICE"):
+            if line.tmp_new_severity_color != line.severity_color:
                 line.severity_color = line.tmp_new_severity_color
                 line.tmp_new_severity_color = ""
                 changed_properties['severity_color'] = line.severity_color
