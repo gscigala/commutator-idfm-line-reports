@@ -98,8 +98,11 @@ class IdfmLineReportsData:
     def disrupted(self, identifier, effect, color):
         for line_dbus in self.line_dbus_list:
             if line_dbus.line.identifier == identifier:
-                line_dbus.line.tmp_new_severity_effect = effect
-                line_dbus.line.tmp_new_severity_color = color
+
+                # To have NO_SERVICE effect in priority
+                if line_dbus.line.tmp_new_severity_effect != "NO_SERVICE":
+                    line_dbus.line.tmp_new_severity_effect = effect
+                    line_dbus.line.tmp_new_severity_color = color
 
     def update_line(self, request):
 
@@ -131,7 +134,8 @@ class IdfmLineReportsData:
                     identifier = pt_object.get("id", [])
                     severity = ""
 
-                    self.disrupted(identifier, effect, color)
+                    if effect != "NO_PROBLEM":
+                        self.disrupted(identifier, effect, color)
 
     def update(self):
 
